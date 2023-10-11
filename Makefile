@@ -5,7 +5,7 @@ OBJ = ${SOURCES:.c=.o cpu/interrupt.o}
 ASM = nasm
 CC = gcc
 LD = ld
-CFLAGS = -g -ffreestanding -Wall -Wextra -fno-exceptions -m32 -std=c11
+CFLAGS = -ffreestanding -Wall -Wextra -fno-exceptions -march=i386 -m32 -std=c11 -fno-pic
 
 ifeq ($(shell uname -s),Darwin)
 	CC = i386-elf-gcc
@@ -28,7 +28,7 @@ boot/boot.bin: boot/boot.asm
 	${ASM} $< -f bin -o $@
 
 kernel/kernel.bin: boot/kernel_entry.o ${OBJ}
-	${LD} -o $@ -Ttext 0x1000 $^ --oformat binary
+	${LD} -o $@ -Ttext 0x1000 $^ --oformat binary -m elf_i386
 
 %.o: %.c ${HEADERS}
 	${CC} ${CFLAGS} -c $< -o $@
