@@ -6,3 +6,4 @@
 *.sym
 *~
 .DS_STORE
+tags
